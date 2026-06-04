@@ -41,6 +41,10 @@ Thumbs.db
 # Environment variables
 .env
 .env.local
+config/agent_config.yaml
+
+# Local data stores
+data/
 
 # Test artifacts
 .pytest_cache/

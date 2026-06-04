@@ -1,7 +1,7 @@
 [project]
 name = "vanguard"
 version = "0.1.0"
-description = "Sistema multi-agente para procesamiento y validación de documentos"
+description = "Multi-agent TPRM platform for law firms — vendor compliance audits via Band"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = []
@@ -11,7 +11,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["core", "agents"]
+packages = ["core", "agents", "dashboard", "integrations"]
 
 [dependency-groups]
 dev = [

@@ -1,0 +1,32 @@
+# Band External Agent credentials (one entry per agent)
+# Copy to config/agent_config.yaml and fill in values from band.ai
+
+agents:
+  intake:
+    uuid: ""
+    api_key: ""
+  lexis:
+    uuid: ""
+    api_key: ""
+  sentinel:
+    uuid: ""
+    api_key: ""
+  ledger:
+    uuid: ""
+    api_key: ""
+  arbiter:
+    uuid: ""
+    api_key: ""
+  truthlock:
+    uuid: ""
+    api_key: ""
+  forge:
+    uuid: ""
+    api_key: ""
+  herald:
+    uuid: ""
+    api_key: ""
+
+band:
+  room_id: ""
+  api_base_url: "https://api.band.ai"
