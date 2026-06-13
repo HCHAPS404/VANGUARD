@@ -1,0 +1,55 @@
+# SOC 2 Type II — Trust Service Criteria
+
+Reference corpus for LEXIS semantic search. Expand during Day 2.
+
+---
+
+## CC1 — Control Environment
+
+Demonstrates commitment to integrity and ethical values. Board exercises oversight. Management establishes structures, reporting lines, and authorities. Commitment to competence. Accountability for internal control.
+
+## CC2 — Communication and Information
+
+Uses relevant, quality information. Internally communicates information necessary for functioning of internal control. Communicates with external parties regarding matters affecting internal control.
+
+## CC3 — Risk Assessment
+
+Specifies suitable objectives. Identifies and analyzes risk. Considers potential for fraud. Identifies and assesses significant changes.
+
+## CC6 — Logical and Physical Access Controls
+
+Restricts logical access. Restricts physical access. Manages credentials for infrastructure and software. Manages credentials for data stores. Manages encryption keys.
+
+## CC7 — System Operations
+
+Manages configuration. Manages capacity. Implements controls to prevent or detect malicious software. Monitors infrastructure and software. Implements change management. Implements backup and recovery.
+
+## CC8 — Change Management
+
+Authorizes, designs, develops, configures, documents, tests, approves, and implements changes.
+
+## CC9 — Risk Mitigation
+
+Identifies, selects, and develops risk mitigation activities for risks from business disruptions and use of vendors.
+
+## A1 — Availability
+
+Maintains, monitors, and evaluates processing capacity and environmental protections. Identifies and addresses processing capacity and environmental protections.
+
+## C1 — Confidentiality
+
+Identifies and maintains confidential information. Disposes of confidential information.
+
+## PI1 — Processing Integrity
+
+Processing is complete, valid, accurate, timely, and authorized.
+
+---
+
+## Common gaps to flag in vendor contracts
+
+- No SOC 2 Type II report available or referenced
+- Report covers only Type I (point-in-time) not Type II (operating effectiveness)
+- Scope of SOC 2 report does not cover the specific service being purchased
+- No independent auditor name or report date provided
+- Trust criteria gaps: no availability SLA, no confidentiality controls described

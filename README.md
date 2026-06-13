@@ -289,18 +289,21 @@ uv add --dev <package>
 
 ---
 
-## 7-Day Build Roadmap
+## Sprint timeline — 13–19 June 2026
 
-| Day | Focus |
-|-----|-------|
-| **0** | Infrastructure — repo, env, Band accounts, ChromaDB, n8n, Notion workspace |
-| **1** | Band Room + **INTAKE** (PDF → ChromaDB → structured Room message + hash) |
-| **2** | **LEXIS**, **SENTINEL**, **LEDGER** — parallel analysis on INTAKE output |
-| **3** | **ARBITER** + **TRUTHLOCK** — debate cycle & claim verification |
-| **4** | **FORGE** + **HERALD** — remediation, PDF report, Telegram, Streamlit |
-| **5** | End-to-end testing with 3 vendor document profiles |
-| **6** | Polish, documentation, demo video |
-| **7** | Lablab.ai final submission |
+Full management plan: **[docs/PROJECT_PLAN.md](docs/PROJECT_PLAN.md)**
+
+| Date | Day | Focus | DEV | Juliana | HELL |
+|:-----|:----|:------|:----|:--------|:-----|
+| 13/06 | 1 | Band Room + **INTAKE** | INTAKE, `core/rag/`, schemas draft | Test PDFs, `.env` setup | `core/band/`, `core/llm/`, Room |
+| 14/06 | 2 | Parallel analysis | **LEXIS**, **SENTINEL**, reference corpus | **LEDGER**, prompts | Schemas `Finding`, Room utils |
+| 15/06 | 3 | Debate & verification | @mention handlers (LEXIS, SENTINEL) | @mention handler (LEDGER), prompts | **ARBITER**, **TRUTHLOCK** |
+| 16/06 | 4 | Remediation & delivery | E2E schemas support | **FORGE**, **HERALD**, Streamlit | TRUTHLOCK → FORGE gate |
+| 17/06 | 5 | Integration & testing | Integration lead | E2E runs, Notion log | E2E support |
+| 18/06 | 6 | Polish & demo video | Refactor, merge to `main` | Integration lead, README | Video + slides |
+| 19/06 | 7 | Lablab.ai submission | Final smoke tests | Demo assets | Integration lead, submit |
+
+**Daily rituals:** standup 09:00 · tech sync 13:00 · demo 18:00 · branches `agent/<name>` → `dev` → `main`
 
 ---
 

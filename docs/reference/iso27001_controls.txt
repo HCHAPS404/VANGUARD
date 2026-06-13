@@ -1,0 +1,59 @@
+# ISO 27001 — Relevant Controls for Vendor Assessment
+
+Reference corpus for LEXIS semantic search. Expand during Day 2.
+
+---
+
+## A.5 — Information security policies
+
+Policies approved by management, published, communicated, and reviewed at planned intervals.
+
+## A.6 — Organization of information security
+
+Roles and responsibilities defined. Segregation of conflicting duties. Contact with authorities and special interest groups.
+
+## A.8 — Asset management
+
+Inventory of assets. Acceptable use of assets. Return of assets upon termination. Classification and labeling of information.
+
+## A.9 — Access control
+
+Access control policy. User registration and de-registration. Privileged access management. Password management. Review of user access rights.
+
+## A.10 — Cryptography
+
+Policy on use of cryptographic controls. Key management procedures.
+
+## A.12 — Operations security
+
+Documented operating procedures. Protection from malware. Backup procedures. Logging and monitoring. Clock synchronization. Installation of software on operational systems. Management of technical vulnerabilities.
+
+## A.13 — Communications security
+
+Network security management. Segregation in networks. Information transfer policies. Agreements for information transfer. Confidentiality or non-disclosure agreements.
+
+## A.14 — System acquisition, development and maintenance
+
+Security requirements in information systems. Secure development policy. Test data protection. Change control procedures.
+
+## A.16 — Information security incident management
+
+Responsibilities and procedures for incident management. Reporting of information security events. Assessment and decision on events. Response to incidents. Learning from incidents. Collection of evidence.
+
+## A.17 — Business continuity
+
+Planning information security continuity. Implementing information security continuity. Verify, review, and evaluate continuity.
+
+## A.18 — Compliance
+
+Identification of applicable legislation and contractual requirements. Intellectual property rights. Protection of records. Privacy and protection of PII. Independent review of information security.
+
+---
+
+## Common gaps to flag in vendor contracts
+
+- No ISO 27001 certification or Statement of Applicability referenced
+- No incident response procedure or SLA for response time
+- No vulnerability management or patch policy described
+- No backup frequency or recovery time objective (RTO/RPO) specified
+- No access control or privileged access management described

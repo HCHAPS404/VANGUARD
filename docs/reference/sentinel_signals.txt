@@ -1,0 +1,58 @@
+# SENTINEL — 50 Common SaaS Security Risk Signals
+
+Reference list for SENTINEL contract analysis. Owner: DEV (Day 2).
+
+Format: SIGNAL_ID | Category | Description
+
+---
+
+1  | Breach Notification | No clause requiring breach notification within 72 hours
+2  | Breach Notification | Breach notification timeline exceeds 72 hours or is undefined
+3  | Breach Notification | No obligation to notify affected data subjects
+4  | Data Residency | Server jurisdiction not specified or ambiguous
+5  | Data Residency | Data stored in jurisdictions without adequacy decision and no SCCs mentioned
+6  | Data Residency | No specification of primary and backup data locations
+7  | Encryption | No mention of encryption at rest
+8  | Encryption | No mention of encryption in transit (TLS/HTTPS)
+9  | Encryption | Encryption standards not specified (e.g., AES-256)
+10 | Encryption | Vendor holds encryption keys without customer-managed key option
+11 | Access Control | No multi-factor authentication requirement for admin access
+12 | Access Control | No role-based access control (RBAC) described
+13 | Access Control | Shared credentials or generic admin accounts permitted
+14 | Access Control | No periodic access review or recertification process
+15 | Incident Response | No incident response plan referenced or described
+16 | Incident Response | No defined incident response SLA or escalation path
+17 | Incident Response | No forensic investigation support commitment
+18 | Backup & Recovery | No backup frequency specified
+19 | Backup & Recovery | No recovery time objective (RTO) defined
+20 | Backup & Recovery | No recovery point objective (RPO) defined
+21 | Backup & Recovery | Backups not encrypted or stored in same region as primary
+22 | Vulnerability Mgmt | No vulnerability scanning or patch management policy
+23 | Vulnerability Mgmt | No SLA for critical vulnerability remediation
+24 | Vulnerability Mgmt | References to end-of-life software or unsupported versions
+25 | Sub-processors | Sub-processors not listed or notification mechanism absent
+26 | Sub-processors | No right to object to new sub-processors
+27 | Audit Rights | No audit rights for customer or third-party auditor
+28 | Audit Rights | Audit rights limited to vendor's own attestation only
+29 | Data Deletion | No data deletion policy upon contract termination
+30 | Data Deletion | No certification of destruction provided
+31 | Data Portability | No data export or portability mechanism described
+32 | SLA Security | No security-related SLA or uptime guarantee
+33 | SLA Security | Uptime SLA below 99.9% for business-critical service
+34 | Penetration Testing | No annual penetration testing commitment
+35 | Penetration Testing | No vulnerability disclosure or bug bounty program
+36 | Logging & Monitoring | No security event logging or monitoring described
+37 | Logging & Monitoring | Log retention period not specified or less than 12 months
+38 | API Security | API authentication method not specified (API keys without rotation)
+39 | API Security | No rate limiting or DDoS protection mentioned
+40 | Network Security | No network segmentation or firewall controls described
+41 | Network Security | Public-facing services without WAF or equivalent
+42 | Physical Security | No physical data center security controls referenced
+43 | Personnel Security | No background checks for personnel with data access
+44 | Personnel Security | No confidentiality agreements for staff
+45 | Compliance Certs | No ISO 27001, SOC 2, or equivalent certification referenced
+46 | Compliance Certs | Certification scope does not cover the contracted service
+47 | Liability | Unlimited liability disclaimer for data breaches
+48 | Liability | Cap on liability disproportionate to potential damage
+49 | Insurance | No cyber insurance or professional liability insurance mentioned
+50 | Termination | No security obligations surviving contract termination

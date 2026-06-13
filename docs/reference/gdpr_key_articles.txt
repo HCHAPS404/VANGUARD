@@ -1,0 +1,56 @@
+# GDPR — Key Articles for Vendor Due Diligence
+
+Reference corpus for LEXIS semantic search. Expand during Day 2.
+
+---
+
+## Art. 5 — Principles of processing
+
+Personal data shall be processed lawfully, fairly, and transparently. Collected for specified, explicit, and legitimate purposes. Adequate, relevant, and limited to what is necessary. Accurate and kept up to date. Kept no longer than necessary. Processed with appropriate security.
+
+## Art. 6 — Lawfulness of processing
+
+Processing requires at least one legal basis: consent, contract, legal obligation, vital interests, public task, or legitimate interests.
+
+## Art. 13 — Information to be provided (data collected from subject)
+
+Controller must provide identity, purposes, legal basis, recipients, retention period, and data subject rights at point of collection.
+
+## Art. 28 — Processor obligations
+
+Processing by a processor shall be governed by a contract that sets out: subject matter, duration, nature and purpose, type of data, obligations and rights of controller. Processor shall process only on documented instructions.
+
+## Art. 30 — Records of processing activities
+
+Controller and processor shall maintain records of processing activities including purposes, categories of data, recipients, transfers, and retention.
+
+## Art. 32 — Security of processing
+
+Appropriate technical and organizational measures: pseudonymization, encryption, confidentiality, integrity, availability, resilience, ability to restore, regular testing and evaluation.
+
+## Art. 33 — Notification of breach to supervisory authority
+
+Without undue delay and within 72 hours of becoming aware. Document all breaches including facts, effects, and remedial action.
+
+## Art. 44-49 — Transfers to third countries
+
+Transfers outside EEA require adequacy decision, appropriate safeguards (SCCs, BCRs), or derogations. Vendor must specify data residency and transfer mechanisms.
+
+## Art. 17 — Right to erasure
+
+Data subject may obtain erasure when data no longer necessary, consent withdrawn, or unlawfully processed. Vendor must support deletion on request.
+
+## Art. 35 — Data protection impact assessment
+
+Required when processing likely to result in high risk. Vendor should indicate if DPIA support or documentation is available.
+
+---
+
+## Common gaps to flag in vendor contracts
+
+- No Data Processing Agreement (DPA) referenced or attached
+- No specification of sub-processors or notification mechanism for changes
+- No breach notification timeline (or timeline exceeds 72 hours)
+- No data residency or transfer mechanism specified
+- No data deletion or return policy upon contract termination
+- No audit rights for the controller
