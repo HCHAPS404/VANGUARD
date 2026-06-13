@@ -1,6 +1,6 @@
 # SENTINEL — The Security Auditor
 
-**Owner:** DEV · **Phase:** A · **Model:** Code/security model (Featherless AI)
+**Owner:** HELL · **Phase:** A · **Model:** Code/security model (Featherless AI)
 
 ## Role
 

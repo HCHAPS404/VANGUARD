@@ -289,21 +289,45 @@ uv add --dev <package>
 
 ---
 
+## Documentation & project management
+
+| Document | Description |
+|----------|-------------|
+| [docs/PROJECT_PLAN.md](docs/PROJECT_PLAN.md) | Full sprint plan — daily tasks, DoD, risks, metrics |
+| [docs/TEAM_CHARTER.md](docs/TEAM_CHARTER.md) | Team ownership, RACI, 15+ tasks per member |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | System design, sequence diagrams, schema catalog |
+| [docs/LABLAB_SUBMISSION.md](docs/LABLAB_SUBMISSION.md) | Hackathon submission checklist |
+| [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md) | 5-act video script |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | Git workflow, PR standards |
+| [docs/adr/](docs/adr/) | Architecture Decision Records |
+
+---
+
+## Team — INZERM
+
+| Member | Agents owned | Focus |
+|--------|-------------|-------|
+| **HELL** | INTAKE, SENTINEL, ARBITER, TRUTHLOCK (4) | Band SDK, debate, verification, tech lead |
+| **DEV** | LEXIS, LEDGER (2) | Platform core — RAG, schemas, LLM, tests |
+| **Juliana** | FORGE, HERALD (2) | Product — Streamlit, PDF, Telegram, demo assets |
+
+---
+
 ## Sprint timeline — 13–19 June 2026
 
-Full management plan: **[docs/PROJECT_PLAN.md](docs/PROJECT_PLAN.md)**
+Full plan: **[docs/PROJECT_PLAN.md](docs/PROJECT_PLAN.md)** · Charter: **[docs/TEAM_CHARTER.md](docs/TEAM_CHARTER.md)**
 
-| Date | Day | Focus | DEV | Juliana | HELL |
-|:-----|:----|:------|:----|:--------|:-----|
-| 13/06 | 1 | Band Room + **INTAKE** | INTAKE, `core/rag/`, schemas draft | Test PDFs, `.env` setup | `core/band/`, `core/llm/`, Room |
-| 14/06 | 2 | Parallel analysis | **LEXIS**, **SENTINEL**, reference corpus | **LEDGER**, prompts | Schemas `Finding`, Room utils |
-| 15/06 | 3 | Debate & verification | @mention handlers (LEXIS, SENTINEL) | @mention handler (LEDGER), prompts | **ARBITER**, **TRUTHLOCK** |
-| 16/06 | 4 | Remediation & delivery | E2E schemas support | **FORGE**, **HERALD**, Streamlit | TRUTHLOCK → FORGE gate |
-| 17/06 | 5 | Integration & testing | Integration lead | E2E runs, Notion log | E2E support |
-| 18/06 | 6 | Polish & demo video | Refactor, merge to `main` | Integration lead, README | Video + slides |
-| 19/06 | 7 | Lablab.ai submission | Final smoke tests | Demo assets | Integration lead, submit |
+| Date | Day | Sprint goal | HELL (4 agents) | DEV (2 agents) | Juliana (2 agents) |
+|:-----|:----|:------------|:----------------|:---------------|:-------------------|
+| 13/06 | 1 | Band Room + INTAKE | Band core, **INTAKE**, Room setup | schemas, RAG, LLM client | Notion, PDFs, `.env`, n8n |
+| 14/06 | 2 | Parallel analysis | **SENTINEL**, @mentions prep | **LEXIS**, **LEDGER**, corpus | Prompts v1, synthetic contract |
+| 15/06 | 3 | Debate & verify | **ARBITER**, **TRUTHLOCK**, session FSM | @mention handlers, fixtures | Debate test doc, screenshots |
+| 16/06 | 4 | Remediation & delivery | TRUTHLOCK→FORGE gate | `run_pipeline.py`, E2E stub | **FORGE**, **HERALD**, Streamlit |
+| 17/06 | 5 | QA — 3 doc profiles | T-03 high risk, Ollama fallback | T-01, `test_e2e.py`, integration lead | T-02, Streamlit Cloud |
+| 18/06 | 6 | Polish & video | Refactor, B-roll, slides | Merge `main`, install verify | Video, cover, README final |
+| 19/06 | 7 | Lablab submission | Integration lead, sign-off | Smoke test | Upload form, demo assets |
 
-**Daily rituals:** standup 09:00 · tech sync 13:00 · demo 18:00 · branches `agent/<name>` → `dev` → `main`
+**Daily rituals:** standup 09:00 · tech sync 13:00 · demo 18:00 · `agent/<name>` → `dev` → `main`
 
 ---
 

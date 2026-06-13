@@ -1,6 +1,6 @@
 # INTAKE — The Document Extractor
 
-**Owner:** DEV · **Phase:** A · **Model:** N/A (processing agent)
+**Owner:** HELL · **Phase:** A · **Model:** N/A (processing agent)
 
 ## Role
 

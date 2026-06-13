@@ -1,6 +1,6 @@
 # LEDGER — The Financial Risk Evaluator
 
-**Owner:** Juliana · **Phase:** A · **Model:** Llama-3-8B-Instruct (Featherless AI)
+**Owner:** DEV · **Phase:** A · **Model:** Llama-3-8B-Instruct (Featherless AI)
 
 ## Role
 

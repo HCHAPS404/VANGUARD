@@ -1,269 +1,437 @@
 # Plan de gestión VANGUARD — 13 al 19 junio 2026
 
-Documento maestro de gestión del sprint hackathon. Resumen ejecutivo en [README.md](../README.md).
+**Versión:** 2.0 · **Evento:** Band of Agents · Lablab.ai  
+**Equipo INZERM:** DEV · Juliana · HELL
+
+Documentos relacionados:
+
+| Documento | Contenido |
+|-----------|-----------|
+| [TEAM_CHARTER.md](TEAM_CHARTER.md) | Ownership, RACI, 15+ tareas por persona |
+| [ARCHITECTURE.md](ARCHITECTURE.md) | Diagramas, schemas, decisiones técnicas |
+| [LABLAB_SUBMISSION.md](LABLAB_SUBMISSION.md) | Checklist de entrega |
+| [DEMO_SCRIPT.md](DEMO_SCRIPT.md) | Guion de video |
+| [CONTRIBUTING.md](../CONTRIBUTING.md) | Git workflow, PR standards |
+| [adr/](adr/) | Architecture Decision Records |
 
 ---
 
-## Contexto y punto de partida
+## Resumen ejecutivo
 
-**Estado actual (Day 0 parcial):** estructura de carpetas, `pyproject.toml`, `README.md`, `.env.example`, `config/agent_config.yaml.example`. Sin código de agentes ni `core/` implementado.
+VANGUARD automatiza auditorías TPRM de proveedores tecnológicos para firmas legales mediante **8 agentes External** en un **Band Room**. El sprint de 7 días (13–19/06/2026) entrega un MVP demostrable con debate estructurado, verificación anti-alucinación (TRUTHLOCK) y reporte ejecutivo vía HERALD.
 
-**Ventana de desarrollo:** 7 días calendario (**13/06 → 19/06/2026**), cierre Lablab.ai el **19/06**.
-
-**Kick-off Band (12/06, 8:00 AM PDT):** el equipo arranca el 13/06; ver grabación del stream antes del standup de apertura.
+**Criterio de éxito:** flujo E2E en video · 8 agentes en Band · repo público · submission Lablab completa el **19/06 18:00**.
 
 ---
 
-## Equipo y reparto paralelo de agentes
+## Ownership de agentes (v2)
 
-Cada persona es **owner** de sus agentes (rama `agent/<nombre>`, prompt en `docs/prompts/`, tests en `tests/fixtures/`). Tareas transversales se reparten en bloques de mañana (sync) / tarde (deep work).
-
-| Persona | Agentes (owner) | Responsabilidad transversal |
-|---------|-----------------|------------------------------|
-| **DEV** | INTAKE, LEXIS, SENTINEL | `core/rag/`, `core/schemas/`, `scripts/run_agent.py`, corpus LEXIS + señales SENTINEL |
-| **Juliana** | LEDGER, FORGE, HERALD | `docs/prompts/`, `docs/reference/`, `dashboard/`, `integrations/` (n8n, Telegram), PDF ejecutivo |
-| **HELL** | ARBITER, TRUTHLOCK | `core/band/`, `core/llm/`, Room Band, integración WebSocket, merge a `dev` |
-
-**Bloque compartido (Días 5–7):** integración E2E, ajuste de prompts, README final, video, entrega Lablab — rotación diaria de **integration lead** (ver cronograma).
+| Persona | Agentes | Count | Foco transversal |
+|---------|---------|-------|------------------|
+| **HELL** | INTAKE, SENTINEL, ARBITER, TRUTHLOCK | **4** | `core/band/`, Room, debate, verificación, tech lead |
+| **DEV** | LEXIS, LEDGER | 2 | `core/rag/`, `core/schemas/`, `core/llm/`, tests |
+| **Juliana** | FORGE, HERALD | 2 | `dashboard/`, `integrations/`, prompts, demo Lablab |
 
 ```mermaid
 gantt
-    title Vanguard 13-19 Jun 2026
+    title Vanguard Sprint v2
     dateFormat YYYY-MM-DD
-    section DEV
-    INTAKE           :d1, 2026-06-13, 1d
-    LEXIS            :d2a, 2026-06-14, 1d
-    SENTINEL         :d2b, 2026-06-14, 1d
-    Mention handlers :d3a, 2026-06-15, 1d
-    E2E support      :d5, 2026-06-17, 3d
-    section Juliana
-    LEDGER           :j2, 2026-06-14, 1d
-    FORGE            :j4, 2026-06-16, 1d
-    HERALD           :j4b, 2026-06-16, 2d
-    Docs and demo    :j6, 2026-06-18, 2d
     section HELL
-    Band core        :h1, 2026-06-13, 1d
-    ARBITER          :h3, 2026-06-15, 1d
-    TRUTHLOCK        :h3b, 2026-06-15, 1d
-    Integration      :h5, 2026-06-17, 2d
-    Submission       :h7, 2026-06-19, 1d
+    Band_core_and_Room     :h0, 2026-06-13, 1d
+    INTAKE                 :h1, 2026-06-13, 1d
+    SENTINEL               :h2, 2026-06-14, 1d
+    ARBITER                :h3, 2026-06-15, 1d
+    TRUTHLOCK              :h3b, 2026-06-15, 1d
+    Integration_lead_D3_D7 :h5, 2026-06-15, 5d
+    section DEV
+    Schemas_and_RAG        :d0, 2026-06-13, 1d
+    LEXIS                  :d2, 2026-06-14, 1d
+    LEDGER                 :d2b, 2026-06-14, 1d
+    Mention_handlers       :d3, 2026-06-15, 1d
+    Tests_and_E2E          :d5, 2026-06-17, 3d
+    section Juliana
+    Notion_and_PDFs        :j0, 2026-06-13, 1d
+    Prompts_polish         :j1, 2026-06-14, 2d
+    FORGE                  :j4, 2026-06-16, 1d
+    HERALD_and_UI          :j4b, 2026-06-16, 2d
+    Demo_assets            :j6, 2026-06-18, 2d
 ```
 
 ---
 
-## Contratos compartidos (bloqueante Day 1 — tarde)
+## Fase 0 — Pre-sprint (completar antes del 13/06)
 
-Antes de que los tres agentes de Fase A avancen en paralelo el Día 2, **DEV + HELL** deben cerrar en `core/schemas/`:
-
-| Schema | Campos clave |
-|--------|--------------|
-| `IngestMessage` | texto segmentado, metadatos, `integrity_hash` |
-| `Finding` | agent, severity, clause_ref, regulation, claim |
-| `DebateMessage` | agents_involved, contradiction, status |
-| `ValidationResult` | claim_id, supported, source_span |
-| `AuditSessionState` | enum de fases del pipeline |
-
-Esto evita divergencia entre los 3 tracks paralelos.
-
----
-
-## Cronograma día a día
-
-### Viernes 13/06 — Día 1: Band Room + INTAKE
-
-**Meta del día:** PDF → PyMuPDF → ChromaDB → mensaje JSON en Room con hash; listeners pasivos confirman recepción por WebSocket.
-
-| Horario | Actividad | Owner |
-|---------|-----------|-------|
-| 09:00–10:00 | Standup + revisión grabación kick-off Band | Todos |
-| 10:00–13:00 | Crear Room Band, `core/band/` (REST + WebSocket), registrar 8 External Agents | HELL |
-| 10:00–13:00 | `core/rag/` (PyMuPDF, ChromaDB, LangChain embeddings), borrador `IngestMessage` | DEV |
-| 10:00–13:00 | Recolectar 3+ PDFs de prueba (Google Workspace / AWS / Azure) en `tests/documents/` | Juliana |
-| 14:00–18:00 | Agente **INTAKE** completo + publicación en Room | DEV |
-| 14:00–18:00 | `core/llm/` base (Featherless client) + listeners pasivos stub en LEXIS/SENTINEL/LEDGER | HELL |
-| 14:00–18:00 | Prompt INTAKE en `docs/prompts/intake.md`, completar `.env` y `agent_config.yaml` | Juliana |
-| 18:00–19:00 | Demo interna: cargar PDF, ver mensaje en Room, confirmar WebSocket | Todos |
-
-**Definition of Done (DoD):**
-
-- [ ] Mensaje INTAKE visible en Band Room con hash verificable
-- [ ] ChromaDB persiste embeddings en `data/chroma/`
-- [ ] Al menos 2 agentes listener reciben el evento por WebSocket
+| ID | Tarea | Owner | Estado |
+|----|-------|-------|--------|
+| P0-1 | Estructura repo + `uv` environment | Todos | Done |
+| P0-2 | Cuenta band.ai + crear team workspace | HELL | [ ] |
+| P0-3 | Registrar 8 External Agents; export UUIDs | HELL | [ ] |
+| P0-4 | Cuenta Featherless AI — activar créditos | DEV | [ ] |
+| P0-5 | Cuenta AI/ML API — activar créditos | HELL | [ ] |
+| P0-6 | ChromaDB: `uv add chromadb langchain pymupdf` + smoke test | DEV | [ ] |
+| P0-7 | Docker + n8n compose (`docker/docker-compose.yml`) | Juliana | [ ] |
+| P0-8 | Notion workspace (5 secciones) | Juliana | [ ] |
+| P0-9 | Telegram bot + chat ID para HERALD | Juliana | [ ] |
+| P0-10 | Ver grabación kick-off Band (12/06) | Todos | [ ] |
+| P0-11 | Branch `dev` creada desde `main` | HELL | [ ] |
+| P0-12 | `.env` + `agent_config.yaml` locales completos | Juliana | [ ] |
 
 ---
 
-### Sábado 14/06 — Día 2: Análisis paralelo (LEXIS, SENTINEL, LEDGER)
+## Workstreams transversales
 
-**Meta del día:** los tres agentes responden al mensaje INTAKE y publican hallazgos estructurados.
-
-| Owner | Entregables |
-|-------|-------------|
-| **DEV** | **LEXIS** + **SENTINEL** funcionales; corpus GDPR/ISO27001/SOC2 en `docs/reference/`; 50 señales SaaS en `docs/reference/sentinel_signals.txt` |
-| **Juliana** | **LEDGER** funcional; prompts `lexis.md`, `sentinel.md`, `ledger.md` |
-| **HELL** | Finalizar schemas `Finding`; utilidad publicar/leer mensajes Room; soporte LLM a DEV/Juliana |
-
-**DoD:**
-
-- [ ] 3 mensajes de hallazgos en Room tras un ingest
-- [ ] Severidad (Critical / High / Medium / Low) en cada finding
-- [ ] Referencia a sección del documento en cada claim
+| Stream | Lead | Entregables sprint |
+|--------|------|-------------------|
+| **Engineering** | HELL | 8 agentes + core/ |
+| **Platform** | DEV | schemas, rag, llm, scripts, pytest |
+| **Product** | Juliana | Streamlit, PDF, Telegram, prompts |
+| **QA** | DEV (D5) | 3 perfiles documento + E2E tests |
+| **DevOps** | Juliana | Docker n8n, Streamlit Cloud |
+| **Documentation** | Juliana (D6) | README, architecture, submission pack |
+| **Demo & pitch** | Juliana + HELL | Video, slides, cover image |
 
 ---
 
-### Domingo 15/06 — Día 3: Debate (ARBITER + TRUTHLOCK) — día crítico
+## Bloqueante crítico — Schemas (Día 1, 14:00)
 
-**Meta del día:** ciclo de debate con @mentions; TRUTHLOCK valida claims contra ChromaDB; gate bloquea si hay invalidaciones pendientes.
+**DEV + HELL** congelan `core/schemas/` antes de implementación paralela:
 
-| Owner | Entregables |
-|-------|-------------|
-| **HELL** | **ARBITER** (contradicciones, sub-hilos, @mentions, Risk Score 0–100) |
-| **HELL** | **TRUTHLOCK** (verificación semántica, alertas de invalidación) |
-| **DEV** | Handlers de respuesta a @mentions en LEXIS y SENTINEL |
-| **Juliana** | Handlers de @mentions en LEDGER; prompts `arbiter.md`, `truthlock.md` |
-
-**DoD:**
-
-- [ ] ARBITER abre debate ante contradicción real entre 2 agentes
-- [ ] Agentes analíticos responden a @mention
-- [ ] TRUTHLOCK invalida al menos 1 claim inventado en prueba controlada
-- [ ] Fase C bloqueada mientras existan alertas TRUTHLOCK pendientes
-
-**Contingencia:** si el debate activo no llega a tiempo, ARBITER resuelve con LLM de razonamiento (AI/ML API) pero **publica el hilo de debate en Room** igualmente.
+| Model | Owner implementación | Owner review |
+|-------|---------------------|--------------|
+| `IngestMessage` | DEV | HELL |
+| `Finding` | DEV | HELL |
+| `DebateMessage` / `DebateResponse` | DEV | HELL |
+| `RiskScore` | DEV | HELL |
+| `ValidationResult` | DEV | HELL |
+| `Remediation` | DEV | Juliana |
+| `ExecutiveSummary` | DEV | Juliana |
+| `AuditSessionState` | HELL | DEV |
 
 ---
 
-### Lunes 16/06 — Día 4: Remediación y salida (FORGE + HERALD)
+## Día 1 — Viernes 13/06 · Band Room + INTAKE
 
-**Meta del día:** flujo punta a punta con Telegram + Score de Riesgo.
+**Meta:** PDF → ChromaDB → IngestMessage en Room · listeners confirman WebSocket  
+**Integration lead:** HELL
 
-| Owner | Entregables |
-|-------|-------------|
-| **Juliana** | **FORGE** (mitigaciones accionables); **HERALD** (PDF reportlab/fpdf2, n8n → Telegram, Streamlit básico) |
-| **DEV** | Schemas `Remediation`, `ExecutiveSummary`; prueba E2E INTAKE → HERALD |
-| **HELL** | Gate TRUTHLOCK → FORGE; Risk Score final expuesto a HERALD |
+### HELL (4 bloques)
 
-**DoD:**
+| ID | Tarea | Horas |
+|----|-------|-------|
+| H-D1-01 | Crear Band Room (debate estructurado habilitado) | 1h |
+| H-D1-02 | Implementar `core/band/client.py` — auth, publish, subscribe | 3h |
+| H-D1-03 | Implementar `core/band/websocket.py` — event listener | 2h |
+| H-D1-04 | Registrar y verificar 8 External Agents | 1h |
+| H-D1-05 | Agente **INTAKE**: PyMuPDF → segment → hash → ChromaDB → publish | 3h |
+| H-D1-06 | Listeners stub pasivos en LEXIS/SENTINEL/LEDGER (log only) | 1h |
+| H-D1-07 | PR `agent/intake` + `feat/band-core` → `dev` | 0.5h |
 
-- [ ] FORGE genera cláusulas legales concretas por hallazgo Critical/High
-- [ ] HERALD envía resumen 5 líneas a Telegram con Score
-- [ ] Streamlit muestra auditoría activa con semáforo
-- [ ] URL del Room Band incluida como evidencia de trazabilidad
+### DEV (4 bloques)
 
-**Contingencia PDF:** si reportlab es pobre visualmente → weasyprint (HTML → PDF).
+| ID | Tarea | Horas |
+|----|-------|-------|
+| D-D1-01 | `uv add pydantic chromadb langchain pymupdf` | 0.5h |
+| D-D1-02 | `core/rag/extractor.py` — PDF text + sections | 2h |
+| D-D1-03 | `core/rag/embeddings.py` — LangChain + ChromaDB | 2h |
+| D-D1-04 | `core/schemas/messages.py` — IngestMessage draft | 2h |
+| D-D1-05 | `core/llm/featherless_client.py` — OpenAI-compatible client | 1.5h |
+| D-D1-06 | Review PR HELL — schemas alignment | 1h |
+| D-D1-07 | Test unitario: extract + embed sample PDF | 1h |
+
+### Juliana (4 bloques)
+
+| ID | Tarea | Horas |
+|----|-------|-------|
+| J-D1-01 | Notion: APIs, Prompts, ADR, Prompt Log, Bitácora | 1.5h |
+| J-D1-02 | Descargar 5 PDFs → `tests/documents/` | 1.5h |
+| J-D1-03 | Completar `.env` + `agent_config.yaml` | 1h |
+| J-D1-04 | Pulir `docs/prompts/intake.md` | 0.5h |
+| J-D1-05 | `docker compose up` — verificar n8n en :5678 | 1h |
+| J-D1-06 | Crear Telegram bot; guardar token en `.env` | 1h |
+| J-D1-07 | Documentar credenciales en Notion (redacted) | 0.5h |
+| J-D1-08 | Asistir demo 18:00 — captura screenshot Room | 0.5h |
+
+**DoD Día 1:** IngestMessage en Room · hash verificable · ChromaDB persist · 2+ listeners WS · PRs merged
 
 ---
 
-### Martes 17/06 — Día 5: Integración, pruebas y prompts
+## Día 2 — Sábado 14/06 · Análisis paralelo
+
+**Meta:** LEXIS + SENTINEL + LEDGER publican Finding[] tras ingest  
+**Integration lead:** DEV
+
+### HELL
+
+| ID | Tarea | Horas |
+|----|-------|-------|
+| H-D2-01 | Agente **SENTINEL** — análisis + cross-ref `sentinel_signals.txt` | 4h |
+| H-D2-02 | Finalizar `core/band/mentions.py` — parse @AGENT | 2h |
+| H-D2-03 | Code review PRs DEV (LEXIS, LEDGER) | 1h |
+| H-D2-04 | Documentar ADR-001 en `docs/adr/` | 0.5h |
+| H-D2-05 | Test SENTINEL: publish Finding con clause_ref | 1h |
+
+### DEV
+
+| ID | Tarea | Horas |
+|----|-------|-------|
+| D-D2-01 | Agente **LEXIS** — RAG sobre `docs/reference/` + Featherless | 4h |
+| D-D2-02 | Agente **LEDGER** — análisis financiero + Featherless | 3h |
+| D-D2-03 | Expandir corpus GDPR/ISO/SOC2 (no stubs) | 2h |
+| D-D2-04 | `core/schemas/findings.py` — Finding + Severity enum | 1h |
+| D-D2-05 | pytest: LEXIS returns valid Finding schema | 1h |
+
+### Juliana
+
+| ID | Tarea | Horas |
+|----|-------|-------|
+| J-D2-01 | Pulir prompts: lexis, sentinel, ledger | 2h |
+| J-D2-02 | Validar outputs con equipo — Prompt Review 13:00 | 1h |
+| J-D2-03 | Crear contrato SaaS sintético alto riesgo (PDF/texto) | 2h |
+| J-D2-04 | Esqueleto `dashboard/app.py` — placeholder | 1h |
+| J-D2-05 | Notion Prompt Log — versión v1 de cada prompt Fase A | 1h |
+| J-D2-06 | Demo 18:00 — capturar 3 Finding messages en Room | 0.5h |
+
+**DoD Día 2:** 3 Finding messages · severidad en cada uno · clause_ref presente · corpus expandido
+
+---
+
+## Día 3 — Domingo 15/06 · Debate (día crítico)
+
+**Meta:** ARBITER debate · TRUTHLOCK gate · @mention handlers  
+**Integration lead:** HELL
+
+### HELL
+
+| ID | Tarea | Horas |
+|----|-------|-------|
+| H-D3-01 | Agente **ARBITER** — detect contradictions, Risk Score | 4h |
+| H-D3-02 | Agente **TRUTHLOCK** — ChromaDB verify + invalidation | 4h |
+| H-D3-03 | `core/schemas/session.py` — AuditSession state machine | 2h |
+| H-D3-04 | `core/llm/aiml_client.py` — AI/ML API for reasoning | 1.5h |
+| H-D3-05 | SENTINEL @mention handler (respuesta en debate) | 1h |
+| H-D3-06 | ADR-002 truthlock gate | 0.5h |
+| H-D3-07 | Prueba controlada: claim inventado → invalidation | 1h |
+
+### DEV
+
+| ID | Tarea | Horas |
+|----|-------|-------|
+| D-D3-01 | LEXIS @mention handler | 2h |
+| D-D3-02 | LEDGER @mention handler | 2h |
+| D-D3-03 | `tests/fixtures/debate_thread.json` mock | 1h |
+| D-D3-04 | Integration test: contradiction triggers DebateMessage | 2h |
+| D-D3-05 | Soporte HELL en aiml_client si bloqueado | 1h |
+
+### Juliana
+
+| ID | Tarea | Horas |
+|----|-------|-------|
+| J-D3-01 | Pulir prompts arbiter, truthlock | 2h |
+| J-D3-02 | Preparar doc con contradicción inducida (lexis vs sentinel) | 1.5h |
+| J-D3-03 | Documentar flujo debate en Notion con screenshots | 1h |
+| J-D3-04 | Review UX: cómo se verá debate en demo video | 1h |
+| J-D3-05 | Demo 18:00 — debate + invalidation en vivo | 1h |
+
+**DoD Día 3:** DebateMessage publicado · agentes responden @mention · 1 invalidation · Phase C blocked
+
+**Contingencia:** ARBITER resuelve con LLM sin respuesta activa; debate thread igual en Room.
+
+---
+
+## Día 4 — Lunes 16/06 · Remediación y entrega
+
+**Meta:** FORGE + HERALD · Telegram · Streamlit · PDF  
+**Integration lead:** Juliana
+
+### HELL
+
+| ID | Tarea | Horas |
+|----|-------|-------|
+| H-D4-01 | Gate TRUTHLOCK → FORGE en session state | 2h |
+| H-D4-02 | Exponer RiskScore payload estandarizado a HERALD | 1h |
+| H-D4-03 | Code review FORGE + HERALD PRs | 1.5h |
+| H-D4-04 | E2E run con Juliana — debug Band issues | 2h |
+| H-D4-05 | Captura video B-roll: Room + TRUTHLOCK | 1h |
+
+### DEV
+
+| ID | Tarea | Horas |
+|----|-------|-------|
+| D-D4-01 | Schemas Remediation + ExecutiveSummary | 1.5h |
+| D-D4-02 | `scripts/run_pipeline.py` — orchestrator local | 3h |
+| D-D4-03 | E2E test stub: ingest → risk score (no herald yet) | 2h |
+| D-D4-04 | Fix integration bugs from pipeline run | 2h |
+
+### Juliana
+
+| ID | Tarea | Horas |
+|----|-------|-------|
+| J-D4-01 | Agente **FORGE** — mitigaciones Critical/High | 3h |
+| J-D4-02 | Agente **HERALD** — compose ExecutiveSummary | 2h |
+| J-D4-03 | `integrations/pdf_generator.py` — reportlab template | 2h |
+| J-D4-04 | n8n workflow: webhook → Telegram | 2h |
+| J-D4-05 | `dashboard/app.py` — sessions, score, semáforo | 2h |
+| J-D4-06 | Demo 18:00 — Telegram recibe Score | 0.5h |
+
+**DoD Día 4:** Cláusulas FORGE · Telegram 5 líneas · Streamlit live · PDF generado · Room URL en report
+
+---
+
+## Día 5 — Martes 17/06 · Integración y QA
 
 **Integration lead:** DEV
 
-**Meta del día:** 3 perfiles de documento probados; log de ajustes en Notion.
+### Matriz de prueba
 
-| Perfil | Documento | Qué validar |
-|--------|-----------|-------------|
-| Bajo riesgo | Política cloud estándar | Score bajo, pocos hallazgos |
-| Riesgo medio | Contrato SaaS incompleto | Debate parcial, score medio |
-| Alto riesgo | Sin GDPR, jurisdicción vaga, sin SLA | ARBITER debate, FORGE remedia, TRUTHLOCK activo |
+| ID | Perfil | Documento | Owner test | Validaciones |
+|----|--------|-----------|------------|--------------|
+| T-01 | Bajo | Google/AWS privacy policy | DEV | Score <40, 0 Critical |
+| T-02 | Medio | Contrato SaaS incompleto | Juliana | Debate parcial, 40–70 |
+| T-03 | Alto | Contrato sintético sin GDPR | HELL | Debate + invalidation test |
 
-**Todos:** ejecutar flujo completo ×3; registrar fallos de prompt y fixes en Notion (Prompt Log + Decision Log).
+### HELL
 
-**DoD:**
+| ID | Tarea | Horas |
+|----|-------|-------|
+| H-D5-01 | Ejecutar T-03; fix ARBITER/TRUTHLOCK | 3h |
+| H-D5-02 | Fallback Ollama stub si créditos bajos | 2h |
+| H-D5-03 | Review 3 Room histories — evidencia judges | 1h |
+| H-D5-04 | pytest e2e support | 2h |
 
-- [ ] 3/3 flujos completos sin crash
-- [ ] TRUTHLOCK: 0 alucinaciones no detectadas en perfil alto riesgo
-- [ ] Notion actualizado con bitácora
+### DEV
+
+| ID | Tarea | Horas |
+|----|-------|-------|
+| D-D5-01 | Ejecutar T-01; fix LEXIS/LEDGER prompts | 3h |
+| D-D5-02 | `tests/test_e2e.py` — 3 profiles automated | 3h |
+| D-D5-03 | Notion Prompt Log — todos los fixes | 1h |
+| D-D5-04 | Performance: ingest <60s for 50-page PDF | 1h |
+
+### Juliana
+
+| ID | Tarea | Horas |
+|----|-------|-------|
+| J-D5-01 | Ejecutar T-02; fix FORGE/HERALD | 3h |
+| J-D5-02 | weasyprint contingency if PDF ugly | 2h |
+| J-D5-03 | Streamlit Cloud deploy | 1.5h |
+| J-D5-04 | Notion Decision Log — design choices | 1h |
+
+**DoD Día 5:** 3/3 E2E green · 0 undetected hallucinations T-03 · Notion complete
 
 ---
 
-### Miércoles 18/06 — Día 6: Pulido, documentación y video
+## Día 6 — Miércoles 18/06 · Pulido y demo
 
 **Integration lead:** Juliana
 
-| Bloque | Owner | Entregables |
-|--------|-------|-------------|
-| Refactor + lint | DEV | Código limpio, merge `dev` → `main` |
-| README + plan | Juliana | README ampliado (setup, `.env`, outputs esperados) |
-| Video + slides | HELL + Juliana | Guion 5 actos (problema 30s, solución 30s, demo 2min, arquitectura 30s, negocio 30s) |
+### HELL
 
-**DoD:**
+| ID | Tarea | Horas |
+|----|-------|-------|
+| H-D6-01 | Refactor band + arbiter + truthlock | 2h |
+| H-D6-02 | Grabar demo Band Room (B-roll) | 2h |
+| H-D6-03 | Slides act 4 — architecture | 1h |
+| H-D6-04 | Code review final PRs | 2h |
 
-- [ ] README con comandos `uv run python scripts/run_agent.py <agent>`
-- [ ] Video grabado (3–5 min)
-- [ ] Slides + imagen de portada Lablab
+### DEV
 
----
+| ID | Tarea | Horas |
+|----|-------|-------|
+| D-D6-01 | Ruff/format entire codebase | 1.5h |
+| D-D6-02 | Merge `dev` → `main` | 1h |
+| D-D6-03 | `scripts/run_agent.py` final + README commands | 2h |
+| D-D6-04 | Verify fresh clone install works | 1.5h |
 
-### Jueves 19/06 — Día 7: Entrega final
+### Juliana
 
-**Integration lead:** HELL
+| ID | Tarea | Horas |
+|----|-------|-------|
+| J-D6-01 | README final — setup, env, outputs, links | 2h |
+| J-D6-02 | Video edit — 5 acts per DEMO_SCRIPT | 3h |
+| J-D6-03 | Cover image 1280×720 | 1h |
+| J-D6-04 | Slides acts 1–3, 5 | 2h |
 
-#### Checklist Lablab.ai
-
-| Entregable | Valor |
-|------------|-------|
-| Título | Vanguard |
-| Descripción corta (≤140 chars) | Multi-agent AI system that automates third-party vendor compliance audits for law firms using Band's collaborative debate infrastructure |
-| Tags | Band, Featherless AI, AI/ML API, Python, RAG, LangChain, ChromaDB, Streamlit |
-| Repo GitHub | Público, código limpio en `main` |
-| Demo | Streamlit Cloud URL |
-| Video + slides + cover | Subidos |
-
-**DoD:** submission completa en Lablab.ai + smoke test final en producción.
+**DoD Día 6:** Video 3–5 min · slides · cover · README complete · `main` stable
 
 ---
 
-## Extras recomendados
+## Día 7 — Jueves 19/06 · Entrega Lablab
 
-Priorizar solo si el DoD del día ya está verde:
+**Integration lead:** HELL · **Submission owner:** Juliana
 
-1. `docker/docker-compose.yml` — n8n self-hosted (Juliana, Día 4)
-2. `core/schemas/session.py` — máquina de estados `AuditSession` (HELL, Día 3)
-3. `tests/fixtures/` — mocks de mensajes Room para pytest (DEV, Día 5)
-4. Deploy Streamlit Cloud (Juliana, Día 6)
-5. Fallback Ollama en `core/llm/` (HELL, Día 5 si créditos Featherless bajan)
+| Hora | Actividad | Owner |
+|------|-----------|-------|
+| 08:00–10:00 | Smoke test completo (ver LABLAB_SUBMISSION.md) | DEV |
+| 10:00–11:00 | Fix blockers P0 | HELL + DEV |
+| 11:00–13:00 | Upload Lablab form — all fields | Juliana |
+| 13:00–14:00 | Team review submission preview | Todos |
+| 14:00–16:00 | Buffer: re-upload video/slides if rejected | Juliana |
+| 16:00–18:00 | Final smoke on Streamlit Cloud · celebrate | Todos |
 
----
-
-## Riesgos y contingencias
-
-| Riesgo | Probabilidad | Impacto | Mitigación | Owner |
-|--------|-------------|---------|------------|-------|
-| Debate ARBITER demasiado complejo | Alta | Crítico | Versión simplificada con resolución LLM + publicación en Room | HELL |
-| Créditos Featherless agotados | Media | Alto | Ollama local para LEXIS/LEDGER; reservar créditos para ARBITER/TRUTHLOCK | HELL |
-| PDF ejecutivo pobre | Media | Medio | weasyprint HTML → PDF | Juliana |
-| Schemas divergentes entre agentes | Media | Alto | Bloque sync Día 1 tarde; PR review obligatorio a `dev` | DEV + HELL |
-| 3 personas, 8 agentes, 7 días | Alta | Alto | Reparto paralelo estricto; standup 09:00; no reasignar agentes mid-sprint | Todos |
+**DoD Día 7:** Lablab submission complete · smoke test green · GitHub public
 
 ---
 
-## Ventajas competitivas (pitch — Día 6)
+## Riesgos ampliados
 
-1. **Band estructural** — debate con @mentions verificable en historial del Room
-2. **TRUTHLOCK** — anti-alucinación en tiempo real contra documento fuente
-3. **8 roles memorables** + 3 fases explicables en menos de 60 segundos
-4. **TPRM legal** — dolor real (40–120 h/auditoría) con demo E2E
-
-*Modelo de negocio: incluir en guion de video / Notion, no en README principal.*
-
----
-
-## Ritual diario del equipo
-
-| Hora | Ritual | Duración |
-|------|--------|----------|
-| 09:00 | Standup — DoD ayer, plan hoy, blockers | 15 min |
-| 13:00 | Sync técnica — schemas, Room, merge conflicts | 15 min |
-| 18:00 | Demo del día — mostrar DoD en Band Room | 30 min |
-
-**Flujo Git:** `agent/<nombre>` → PR a `dev` → merge diario → `main` el Día 6.
+| ID | Riesgo | Prob | Impacto | Mitigación | Owner |
+|----|--------|------|---------|------------|-------|
+| R1 | Debate ARBITER complejo | Alta | Crítico | Simplified LLM resolve + Room thread | HELL |
+| R2 | Featherless credits exhausted | Media | Alto | Ollama LEXIS/LEDGER; save AI/ML for B | DEV |
+| R3 | PDF quality poor | Media | Medio | weasyprint fallback | Juliana |
+| R4 | Schema drift | Media | Alto | D1 14:00 freeze; PR review | DEV+HELL |
+| R5 | Band SDK API changes | Baja | Alto | Kick-off recording; Band discord | HELL |
+| R6 | Streamlit deploy fail | Media | Medio | Local demo video backup | Juliana |
+| R7 | n8n Telegram broken | Media | Medio | Direct Telegram API in HERALD | Juliana |
+| R8 | 4 agents on HELL overload | Media | Alto | SENTINEL simplified to top-20 signals | HELL |
+| R9 | No merge conflicts day 5 | Alta | Medio | Daily merge to dev mandatory | Todos |
 
 ---
 
-## Criterio de éxito del sprint
+## Ventajas competitivas (pitch)
 
-El sprint es exitoso si el **19/06 a las 18:00** se cumple:
+1. **Band estructural** — @mentions + sub-hilos verificables
+2. **TRUTHLOCK** — anti-alucinación en tiempo real
+3. **8 roles + 3 fases** — explicable en 60 segundos
+4. **TPRM legal** — dolor cuantificado con demo E2E
+5. **Trazabilidad** — Room URL en reporte ejecutivo
 
-1. Flujo E2E demostrable en video (PDF → Room → debate → TRUTHLOCK → Telegram + Streamlit)
-2. 8 agentes registrados y funcionales en Band
-3. Repositorio público con README instalable
-4. Submission Lablab.ai completa
+---
+
+## Rituales diarios
+
+| Hora | Ritual | Participantes |
+|------|--------|---------------|
+| 09:00 | Standup — DoD ayer, plan hoy, blockers | Todos |
+| 13:00 | Tech sync — schemas, merges, Band issues | Todos |
+| 18:00 | Demo — DoD en Band Room | Todos |
+| 21:00 | Async — Notion bitácora (opcional) | Owner del día |
+
+---
+
+## Métricas de progreso
+
+Track daily in Notion:
+
+| Métrica | Target D7 |
+|---------|-------------|
+| Agents functional | 8/8 |
+| Schemas implemented | 8/8 |
+| E2E profiles passing | 3/3 |
+| Room messages in demo | 20+ |
+| pytest passing | 100% |
+| PRs merged to dev | 15+ |
+| Video uploaded | 1 |
+| Lablab fields complete | 100% |
+
+---
+
+## Criterio de éxito final
+
+El **19/06 18:00** el sprint es exitoso si:
+
+1. Video demuestra PDF → Room debate → TRUTHLOCK → Telegram + Streamlit
+2. 8 External Agents operativos en Band
+3. Repo público instalable en <15 min
+4. Lablab.ai submission 100% completa
+5. Cada integrante completó ≥15 tareas asignadas en [TEAM_CHARTER.md](TEAM_CHARTER.md)
