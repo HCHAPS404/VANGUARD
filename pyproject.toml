@@ -4,7 +4,14 @@ version = "0.1.0"
 description = "Multi-agent TPRM platform for law firms — vendor compliance audits via Band"
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = []
+dependencies = [
+    "chromadb>=1.5.9",
+    "langchain>=1.3.9",
+    "openai>=2.41.1",
+    "pydantic>=2.13.4",
+    "pymupdf>=1.27.2.3",
+    "pytest>=9.0.3",
+]
 
 [build-system]
 requires = ["hatchling"]
