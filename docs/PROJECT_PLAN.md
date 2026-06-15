@@ -66,9 +66,9 @@ gantt
 | P0-1 | Estructura repo + `uv` environment | Todos | Done |
 | P0-2 | Cuenta band.ai + crear team workspace | HELL | [ ] |
 | P0-3 | Registrar 8 External Agents; export UUIDs | HELL | [ ] |
-| P0-4 | Cuenta Featherless AI — activar créditos | DEV | [ ] |
+| P0-4 | Cuenta Featherless AI — activar créditos | DEV | Done |
 | P0-5 | Cuenta AI/ML API — activar créditos | HELL | [ ] |
-| P0-6 | ChromaDB: `uv add chromadb langchain pymupdf` + smoke test | DEV | [ ] |
+| P0-6 | ChromaDB: `uv add chromadb langchain pymupdf` + smoke test | DEV | Done |
 | P0-7 | Docker + n8n compose (`docker/docker-compose.yml`) | Juliana | [ ] |
 | P0-8 | Notion workspace (5 secciones) | Juliana | [ ] |
 | P0-9 | Telegram bot + chat ID para HERALD | Juliana | [ ] |
@@ -130,13 +130,14 @@ gantt
 
 | ID | Tarea | Horas |
 |----|-------|-------|
-| D-D1-01 | `uv add pydantic chromadb langchain pymupdf` | 0.5h |
-| D-D1-02 | `core/rag/extractor.py` — PDF text + sections | 2h |
-| D-D1-03 | `core/rag/embeddings.py` — LangChain + ChromaDB | 2h |
-| D-D1-04 | `core/schemas/messages.py` — IngestMessage draft | 2h |
-| D-D1-05 | `core/llm/featherless_client.py` — OpenAI-compatible client | 1.5h |
+| D-D1-01 | ✅ `uv add pydantic chromadb langchain pymupdf` | 0.5h |
+| D-D1-02 | ✅ `core/rag/extractor.py` — PDF text + sections | 2h |
+| D-D1-03 | ✅ `core/rag/embeddings.py` — LangChain + ChromaDB | 2h |
+| D-D1-04 | ✅ `core/schemas/messages.py` — IngestMessage draft | 2h |
+| D-D1-05 | ✅ `core/llm/featherless_client.py` — OpenAI-compatible client | 1.5h |
 | D-D1-06 | Review PR HELL — schemas alignment | 1h |
-| D-D1-07 | Test unitario: extract + embed sample PDF | 1h |
+| D-D1-07 | ✅ Test unitario: extract + embed sample PDF | 1h |
+| D-D1-08 | ✅ `scripts/run_tests.sh` — wrapper for unit tests | 0.5h |
 
 ### Juliana (4 bloques)
 
